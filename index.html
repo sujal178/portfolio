@@ -590,26 +590,40 @@ document.getElementById("contactForm").addEventListener("submit", function (e) {
         name: document.getElementById("cName").value
     };
 
-    emailjs.send(
+ emailjs.send(
+    "service_f3ry8uc",
+    "template_yxndtqm",
+    params
+)
+.then(function(response){
+
+    console.log("Contact email sent:", response);
+
+    return emailjs.send(
         "service_f3ry8uc",
-        "template_yxndtqm",
+        "template_tz37p6v",
         params
-    )
-    .then(() => {
-        return emailjs.send(
-            "service_f3ry8uc",
-            "template_tz37p6v",
-            params
-        );
-    })
-    .then(() => {
-        alert("Message sent successfully!");
-        document.getElementById("contactForm").reset();
-    })
-    .catch((error) => {
-        console.error(error);
-        alert(error.text || "Failed to send.");
-    });
+    );
+
+})
+.then(function(response){
+
+    console.log("Auto reply sent:", response);
+
+    alert("Message sent successfully!");
+    document.getElementById("contactForm").reset();
+
+})
+.catch(function(error){
+
+    console.log("EmailJS ERROR:", error);
+
+    alert(
+      "Email failed: " + 
+      JSON.stringify(error)
+    );
+
+});
 });
 </script>
 
