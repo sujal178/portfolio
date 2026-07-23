@@ -579,15 +579,27 @@ document.getElementById("contactForm").addEventListener("submit", function (e) {
 
     e.preventDefault();
 
-  emailjs.send(
-    "service_f3ry8uc",
-    "template_yxndtqm",
-    {
-        from_name: document.getElementById("cName").value,
-        from_email: document.getElementById("cEmail").value,
-        message: document.getElementById("cMsg").value
-    }
-)
+
+  const params = {
+    from_name: document.getElementById("cName").value,
+    from_email: document.getElementById("cEmail").value,
+    message: document.getElementById("cMsg").value
+};
+
+// Email to you
+emailjs.send("service_f3ry8uc", "template_yxndtqm", params)
+.then(() => {
+
+    // Auto reply to sender
+    return emailjs.send(
+        "service_f3ry8uc",
+        "template_yxndtqm",
+        params
+    );
+
+})
+
+    
 .then(() => {
     alert("Message sent successfully!");
 })
