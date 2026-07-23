@@ -482,58 +482,23 @@
       <h2 class="title">Let's talk</h2>
       <p class="lede">Hiring for a backend or Java role? Send a message directly, or reach me through any of the channels alongside.</p>
       <div class="contact-grid">
-     
-        
-<form action="https://api.web3forms.com/submit" method="POST">
-
-    <!-- Web3Forms Access Key -->
-    <input type="hidden" name="access_key" value="3a9b65ab-1e98-4c62-84cf-2c1c6899e3f5">
-
-    <div class="field">
-        <label>Name</label>
-        <input 
-          type="text" 
-          name="name" 
-          required 
-          placeholder="Your name">
-    </div>
-
-    <div class="field">
-        <label>Email</label>
-        <input 
-          type="email" 
-          name="email" 
-          required 
-          placeholder="you@company.com">
-    </div>
-
-    <div class="field">
-        <label>Message</label>
-        <textarea 
-          name="message" 
-          required 
-          placeholder="Tell me about the role..."></textarea>
-    </div>
-
-
-    <!-- Optional settings -->
-    <input type="hidden" name="subject" value="New Portfolio Contact">
-    <input type="hidden" name="from_name" value="Sujal Portfolio">
-
-
-    <button type="submit" class="btn btn-primary" style="border:none;cursor:pointer;">
-        Send Message →
-    </button>
-
-</form>
-
-
-        
+        <form id="contactForm">
+          <div class="field">
+            <label>Name</label>
+            <input type="text" id="cName" required placeholder="Your name">
+          </div>
+          <div class="field">
+            <label>Email</label>
+            <input type="email" id="cEmail" required placeholder="you@company.com">
+          </div>
+          <div class="field">
+            <label>Message</label>
+            <textarea id="cMsg" required placeholder="Tell me about the role..."></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary" style="border:none;cursor:pointer;">Send Message →</button>
+        </form>
         <div class="contact-links">
-<a class="contact-link-row"
-href="https://mail.google.com/mail/?view=cm&fs=1&to=sujalbagwade17@gmail.com&su=Portfolio%20Contact"
-target="_blank"
-rel="noopener">
+          <a class="contact-link-row" href="mailto:sujalbagwade17@gmail.com">
             <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z"/><path d="m22 6-10 7L2 6"/></svg>
             <div class="txt"><div class="k">EMAIL</div><div class="v">sujalbagwade17@gmail.com</div></div>
           </a>
@@ -606,36 +571,34 @@ rel="noopener">
   revealEls.forEach(el=>io.observe(el));
 
 </script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script>
-const form = document.querySelector("form");
+emailjs.init("Zx4tYXyUlNY61c3PL");
 
-form.addEventListener("submit", async function(e){
+document.getElementById("contactForm").addEventListener("submit", function (e) {
 
     e.preventDefault();
 
-    const data = new FormData(form);
-
-    const response = await fetch(
-        "https://api.web3forms.com/submit",
+    emailjs.send(
+        "service_f3ry8uc",
+        "template_yxndtqm",
         {
-            method:"POST",
-            body:data
+            from_name: document.getElementById("cName").value,
+            from_email: document.getElementById("cEmail").value,
+            message: document.getElementById("cMsg").value
         }
-    );
-
-    const result = await response.json();
-
-    if(result.success){
-        alert("Message sent successfully!");
-        form.reset();
-    }
-    else{
-        alert("Something went wrong!");
-    }
+    )
+    .then(function () {
+        alert("✅ Message sent successfully!");
+        document.getElementById("contactForm").reset();
+    })
+    .catch(function (error) {
+        console.error(error);
+        alert("❌ Failed to send message.");
+    });
 
 });
 </script>
-
 
 </body>
 </html>
