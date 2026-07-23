@@ -576,34 +576,38 @@
 emailjs.init("Zx4tYXyUlNY61c3PL");
 
 document.getElementById("contactForm").addEventListener("submit", function (e) {
-
     e.preventDefault();
 
+    const params = {
+        from_name: document.getElementById("cName").value,
+        from_email: document.getElementById("cEmail").value,
+        message: document.getElementById("cMsg").value,
 
-// Email to you
-emailjs.send(
-    "service_f3ry8uc",
-    "template_yxndtqm",
-    params
-)
-.then(() => {
+        // For auto reply template
+        email: document.getElementById("cEmail").value,
+        name: document.getElementById("cName").value
+    };
 
-    // Auto reply to sender
-    return emailjs.send(
+    emailjs.send(
         "service_f3ry8uc",
-        "template_tz37p6v",
+        "template_yxndtqm",
         params
-    );
-
-})
-.then(() => {
-    alert("Message sent successfully!");
-})
-.catch((error) => {
-    console.error(error);
-    alert(`Status: ${error.status}\nMessage: ${error.text}`);
-});
-
+    )
+    .then(() => {
+        return emailjs.send(
+            "service_f3ry8uc",
+            "template_tz37p6v",
+            params
+        );
+    })
+    .then(() => {
+        alert("Message sent successfully!");
+        document.getElementById("contactForm").reset();
+    })
+    .catch((error) => {
+        console.error(error);
+        alert(error.text || "Failed to send.");
+    });
 });
 </script>
 
