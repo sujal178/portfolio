@@ -581,6 +581,34 @@
     window.location.href = `mailto:sujalbagwade17@gmail.com?subject=${subject}&body=${body}`;
   });
 </script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>
+emailjs.init("Zx4tYXyUlNY61c3PL");
+
+document.getElementById("contactForm").addEventListener("submit", function (e) {
+
+    e.preventDefault();
+
+    emailjs.send(
+        "service_f3ry8uc",
+        "template_yxndtqm",
+        {
+            from_name: document.getElementById("cName").value,
+            from_email: document.getElementById("cEmail").value,
+            message: document.getElementById("cMsg").value
+        }
+    )
+    .then(function () {
+        alert("✅ Message sent successfully!");
+        document.getElementById("contactForm").reset();
+    })
+    .catch(function (error) {
+        console.error(error);
+        alert("❌ Failed to send message.");
+    });
+
+});
+</script>
 
 </body>
 </html>
