@@ -580,31 +580,27 @@ document.getElementById("contactForm").addEventListener("submit", function (e) {
     e.preventDefault();
 
 
-  const params = {
-    from_name: document.getElementById("cName").value,
-    from_email: document.getElementById("cEmail").value,
-    message: document.getElementById("cMsg").value
-};
-
 // Email to you
-emailjs.send("service_f3ry8uc", "template_yxndtqm", params)
+emailjs.send(
+    "service_f3ry8uc",
+    "template_yxndtqm",
+    params
+)
 .then(() => {
 
     // Auto reply to sender
     return emailjs.send(
         "service_f3ry8uc",
-        "template_yxndtqm",
+        "template_tz37p6v",
         params
     );
 
 })
-
-    
 .then(() => {
     alert("Message sent successfully!");
 })
 .catch((error) => {
-    console.error("EmailJS:", error);
+    console.error(error);
     alert(`Status: ${error.status}\nMessage: ${error.text}`);
 });
 
