@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sujal Bagawade — Backend Developer</title>
+<meta name="description" content="Sujal Bagawade — Backend Developer. Java, Spring Boot, NestJS, REST APIs.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0A0D12;
+    --surface:#12161D;
+    --surface-2:#171C25;
+    --border:#232A35;
+    --border-hover:#38424F;
+    --text:#E7EAEE;
+    --text-dim:#8B95A3;
+    --text-faint:#5A6472;
+    --accent:#5EEAD4;
+    --accent-dim:#2C9C8B;
+    --accent-2:#F5A623;
+    --key:#C792EA;
+    --danger:#F87171;
+    --radius:10px;
+    --mono:'JetBrains Mono', monospace;
+    --sans:'Inter', sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--sans);
+    line-height:1.6;
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--accent);color:var(--bg);}
+
+  /* background texture */
+  body::before{
+    content:'';
+    position:fixed; inset:0;
+    background-image:
+      radial-gradient(circle at 15% 10%, rgba(94,234,212,0.06), transparent 40%),
+      radial-gradient(circle at 85% 80%, rgba(245,166,35,0.05), transparent 40%),
+      linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+    background-size: auto, auto, 48px 48px, 48px 48px;
+    pointer-events:none;
+    z-index:0;
+  }
+
+  .wrap{max-width:1040px;margin:0 auto;padding:0 24px;position:relative;z-index:1;}
+
+  a{color:inherit;text-decoration:none;}
+  .mono{font-family:var(--mono);}
+
+  /* ---------- NAV ---------- */
+  header{
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    backdrop-filter:blur(10px);
+    background:rgba(10,13,18,0.75);
+    border-bottom:1px solid var(--border);
+  }
+  nav{
+    max-width:1040px;margin:0 auto;padding:16px 24px;
+    display:flex;align-items:center;justify-content:space-between;
+  }
+  .logo{
+    font-family:var(--mono);font-weight:700;font-size:15px;
+    display:flex;align-items:center;gap:8px;
+  }
+  .logo .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);
+    box-shadow:0 0 8px var(--accent); animation:pulse 2s infinite;}
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.4;}}
+  .nav-links{display:flex;gap:28px;font-family:var(--mono);font-size:13px;color:var(--text-dim);}
+  .nav-links a{transition:color .2s;}
+  .nav-links a:hover{color:var(--accent);}
+  .nav-cta{
+    font-family:var(--mono);font-size:13px;font-weight:600;
+    background:var(--accent);color:#04211C;
+    padding:8px 16px;border-radius:6px;
+    transition:transform .15s, box-shadow .15s;
+  }
+  .nav-cta:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(94,234,212,0.25);}
+  .nav-toggle{display:none;background:none;border:none;color:var(--text);font-size:22px;cursor:pointer;}
+
+  @media (max-width:760px){
+    .nav-links{display:none;}
+    .nav-toggle{display:block;}
+  }
+
+  /* ---------- SECTION SHELL ---------- */
+  section{padding:120px 0 40px;position:relative;}
+  .section-inner{padding-bottom:80px;border-bottom:1px solid var(--border);}
+  section:last-of-type .section-inner{border-bottom:none;}
+  .eyebrow{
+    font-family:var(--mono);font-size:12px;color:var(--accent);
+    letter-spacing:0.5px; margin-bottom:14px; display:flex; align-items:center; gap:10px;
+  }
+  .eyebrow::before{content:'';width:18px;height:1px;background:var(--accent-dim);}
+  h2.title{
+    font-family:var(--sans);font-weight:800;font-size:clamp(28px,4vw,40px);
+    margin-bottom:16px; letter-spacing:-0.02em;
+  }
+  .lede{color:var(--text-dim);max-width:560px;font-size:16px;margin-bottom:48px;}
+
+  .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease, transform .7s ease;}
+  .reveal.in{opacity:1;transform:translateY(0);}
+
+  /* ---------- HERO ---------- */
+  .hero{padding:170px 0 80px;min-height:92vh;display:flex;align-items:center;}
+  .hero-grid{display:grid;grid-template-columns:1.05fr 0.95fr;gap:56px;align-items:center;width:100%;}
+  @media (max-width:860px){.hero-grid{grid-template-columns:1fr;}}
+
+  .hero-eyebrow{font-family:var(--mono);color:var(--accent-2);font-size:13px;margin-bottom:18px;
+    display:flex;align-items:center;gap:8px;}
+  .hero-eyebrow .status-dot{width:7px;height:7px;border-radius:50%;background:var(--accent-2);animation:pulse 2s infinite;}
+
+  .hero h1{
+    font-size:clamp(36px,5.4vw,58px);font-weight:800;line-height:1.06;
+    letter-spacing:-0.03em;margin-bottom:22px;
+  }
+  .hero h1 span{color:var(--accent);}
+  .hero p.sub{color:var(--text-dim);font-size:17px;max-width:460px;margin-bottom:36px;}
+  .hero-actions{display:flex;gap:14px;flex-wrap:wrap;}
+  .btn{
+    font-family:var(--mono);font-size:14px;font-weight:600;padding:13px 22px;
+    border-radius:7px;transition:all .18s;display:inline-flex;align-items:center;gap:8px;
+  }
+  .btn-primary{background:var(--accent);color:#04211C;}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(94,234,212,0.22);}
+  .btn-outline{border:1px solid var(--border-hover);color:var(--text);}
+  .btn-outline:hover{border-color:var(--accent);color:var(--accent);}
+
+  /* JSON hero card */
+  .json-card{
+    background:var(--surface);border:1px solid var(--border);border-radius:12px;
+    box-shadow:0 24px 60px -20px rgba(0,0,0,0.6);overflow:hidden;
+  }
+  .json-card-head{
+    display:flex;align-items:center;gap:8px;padding:12px 16px;
+    border-bottom:1px solid var(--border);background:var(--surface-2);
+  }
+  .json-card-head .dot{width:10px;height:10px;border-radius:50%;}
+  .d-red{background:#F87171;} .d-yellow{background:#FBBF24;} .d-green{background:#5EEAD4;}
+  .json-card-head span{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--text-faint);}
+  .json-card-body{padding:22px 20px;font-family:var(--mono);font-size:13.5px;line-height:1.9;min-height:290px;}
+  .req-line{color:var(--text-dim);margin-bottom:4px;}
+  .req-line .method{color:var(--accent-2);font-weight:700;}
+  .status-line{color:var(--accent);margin-bottom:16px;}
+  .json-key{color:var(--key);}
+  .json-str{color:var(--accent);}
+  .json-arr{color:#F5A623;}
+  .json-punc{color:var(--text-faint);}
+  .cursor{display:inline-block;width:7px;height:14px;background:var(--accent);
+    animation:blink 1s step-end infinite;vertical-align:middle;margin-left:2px;}
+  @keyframes blink{50%{opacity:0;}}
+
+  /* ---------- ABOUT ---------- */
+  .about-grid{display:grid;grid-template-columns:1.2fr 0.8fr;gap:48px;}
+  @media (max-width:760px){.about-grid{grid-template-columns:1fr;}}
+  .about-text p{color:var(--text-dim);margin-bottom:16px;font-size:15.5px;}
+  .about-text strong{color:var(--text);font-weight:600;}
+  .stat-list{display:flex;flex-direction:column;gap:0;border:1px solid var(--border);border-radius:10px;overflow:hidden;}
+  .stat-row{display:flex;justify-content:space-between;padding:16px 18px;border-bottom:1px solid var(--border);background:var(--surface);}
+  .stat-row:last-child{border-bottom:none;}
+  .stat-row .k{font-family:var(--mono);font-size:12.5px;color:var(--text-faint);}
+  .stat-row .v{font-family:var(--mono);font-size:13.5px;color:var(--accent);font-weight:600;}
+
+  /* ---------- SKILLS ---------- */
+  .skill-groups{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+  @media (max-width:760px){.skill-groups{grid-template-columns:1fr;}}
+  .skill-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:22px;transition:border-color .2s, transform .2s;}
+  .skill-card:hover{border-color:var(--border-hover);transform:translateY(-3px);}
+  .skill-card .label{font-family:var(--mono);font-size:11.5px;color:var(--text-faint);margin-bottom:14px;
+    text-transform:uppercase;letter-spacing:0.6px;}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;}
+  .chip{
+    font-family:var(--mono);font-size:12.5px;padding:6px 11px;border-radius:6px;
+    background:var(--surface-2);border:1px solid var(--border);color:var(--text-dim);
+    transition:all .18s;
+  }
+  .chip:hover{border-color:var(--accent);color:var(--accent);}
+
+  /* ---------- PROJECTS ---------- */
+  .project{
+    background:var(--surface);border:1px solid var(--border);border-radius:12px;
+    margin-bottom:22px;overflow:hidden;transition:border-color .2s, transform .2s;
+  }
+  .project:hover{border-color:var(--border-hover);transform:translateY(-2px);}
+  .project-head{
+    display:flex;align-items:center;gap:12px;padding:16px 22px;border-bottom:1px solid var(--border);
+    flex-wrap:wrap;
+  }
+  .method-badge{font-family:var(--mono);font-size:12px;font-weight:700;padding:4px 9px;border-radius:5px;}
+  .m-post{background:rgba(94,234,212,0.12);color:var(--accent);}
+  .m-get{background:rgba(245,166,35,0.12);color:var(--accent-2);}
+  .project-head .path{font-family:var(--mono);font-size:14px;color:var(--text);}
+  .project-head .status-chip{
+    margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--accent);
+    border:1px solid var(--accent-dim);padding:3px 9px;border-radius:20px;
+  }
+  .project-body{padding:22px;}
+  .project-body h3{font-size:19px;font-weight:700;margin-bottom:8px;}
+  .project-body p{color:var(--text-dim);font-size:14.5px;margin-bottom:16px;max-width:640px;}
+  .project-tags{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:18px;}
+  .tag{font-family:var(--mono);font-size:11.5px;padding:4px 9px;border-radius:5px;
+    background:var(--surface-2);color:var(--text-faint);border:1px solid var(--border);}
+  .project-links{display:flex;gap:18px;flex-wrap:wrap;}
+  .project-links a{
+    font-family:var(--mono);font-size:13px;color:var(--accent);display:inline-flex;align-items:center;gap:5px;
+    border-bottom:1px solid transparent;
+  }
+  .project-links a:hover{border-bottom-color:var(--accent);}
+
+  /* ---------- CERTS ---------- */
+  .cert-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;}
+  @media (max-width:760px){.cert-grid{grid-template-columns:1fr;}}
+  .cert-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:20px 22px;
+    display:flex;gap:14px;transition:border-color .2s, transform .2s;}
+  .cert-card:hover{border-color:var(--accent-dim);transform:translateY(-2px);}
+  .cert-check{width:30px;height:30px;flex:none;border-radius:50%;background:rgba(94,234,212,0.12);
+    display:flex;align-items:center;justify-content:center;color:var(--accent);font-size:15px;}
+  .cert-card h4{font-size:14.5px;font-weight:700;margin-bottom:3px;}
+  .cert-card .issuer{font-size:13px;color:var(--text-dim);margin-bottom:6px;}
+  .cert-card .meta{font-family:var(--mono);font-size:11px;color:var(--text-faint);}
+
+  /* ---------- GITHUB ---------- */
+  .gh-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:26px;}
+  .gh-head{display:flex;align-items:center;gap:12px;margin-bottom:20px;}
+  .gh-head svg{width:26px;height:26px;color:var(--text);}
+  .gh-head .name{font-family:var(--mono);font-size:14px;color:var(--text-dim);}
+  .gh-imgs{display:grid;grid-template-columns:1.3fr 1fr;gap:16px;}
+  @media (max-width:640px){.gh-imgs{grid-template-columns:1fr;}}
+  .gh-imgs img{width:100%;border-radius:8px;border:1px solid var(--border);display:block;}
+  .gh-note{font-family:var(--mono);font-size:11.5px;color:var(--text-faint);margin-top:14px;}
+
+  /* ---------- CONTACT ---------- */
+  .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;}
+  @media (max-width:760px){.contact-grid{grid-template-columns:1fr;}}
+  .field{margin-bottom:16px;}
+  .field label{font-family:var(--mono);font-size:11.5px;color:var(--text-faint);display:block;margin-bottom:7px;text-transform:uppercase;letter-spacing:0.5px;}
+  .field input, .field textarea{
+    width:100%;background:var(--surface);border:1px solid var(--border);border-radius:7px;
+    padding:12px 14px;color:var(--text);font-family:var(--sans);font-size:14px;
+    transition:border-color .2s;
+  }
+  .field input:focus, .field textarea:focus{outline:none;border-color:var(--accent);}
+  .field textarea{resize:vertical;min-height:110px;}
+  .contact-links{display:flex;flex-direction:column;gap:0;border:1px solid var(--border);border-radius:10px;overflow:hidden;height:fit-content;}
+  .contact-link-row{
+    display:flex;align-items:center;gap:14px;padding:18px 20px;border-bottom:1px solid var(--border);
+    background:var(--surface);transition:background .2s;
+  }
+  .contact-link-row:last-child{border-bottom:none;}
+  .contact-link-row:hover{background:var(--surface-2);}
+  .contact-link-row .ic{width:20px;height:20px;color:var(--accent);flex:none;}
+  .contact-link-row .txt .k{font-family:var(--mono);font-size:11px;color:var(--text-faint);}
+  .contact-link-row .txt .v{font-size:14.5px;color:var(--text);}
+
+  footer{padding:40px 0 60px;text-align:center;}
+  footer p{font-family:var(--mono);font-size:12px;color:var(--text-faint);}
+
+  ::-webkit-scrollbar{width:9px;}
+  ::-webkit-scrollbar-track{background:var(--bg);}
+  ::-webkit-scrollbar-thumb{background:var(--border-hover);border-radius:10px;}
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <div class="logo"><span class="dot"></span> sujal<span style="color:var(--text-faint)">.</span>dev</div>
+    <div class="nav-links">
+      <a href="#about">/about</a>
+      <a href="#skills">/skills</a>
+      <a href="#projects">/projects</a>
+      <a href="#certs">/certs</a>
+      <a href="#contact">/contact</a>
+    </div>
+    <a class="nav-cta" href="https://drive.google.com/file/d/16ggcdl1EpkDRHK7Po5404RGmcMO1ugCE/view?usp=drive_link" target="_blank" rel="noopener">↓ resume.pdf</a>
+  </nav>
+</header>
+
+<div class="wrap">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-grid">
+      <div>
+        <div class="hero-eyebrow"><span class="status-dot"></span> AVAILABLE FOR HIRE — FRESHER, 2026</div>
+        <h1>Backend developer who ships <span>working APIs</span>, not just résumés.</h1>
+        <p class="sub">I'm Sujal Bagawade — a Computer Engineering grad from Pune who builds and deploys real backend systems with Java, Spring Boot, and NestJS. No filler, just shipped work.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#projects">View Projects →</a>
+          <a class="btn btn-outline" href="https://drive.google.com/file/d/16ggcdl1EpkDRHK7Po5404RGmcMO1ugCE/view?usp=drive_link" target="_blank" rel="noopener">Download Résumé</a>
+        </div>
+      </div>
+      <div class="json-card">
+        <div class="json-card-head">
+          <span class="dot d-red"></span><span class="dot d-yellow"></span><span class="dot d-green"></span>
+          <span>profile.json</span>
+        </div>
+        <div class="json-card-body" id="jsonBody"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="section-inner reveal">
+      <div class="eyebrow">GET /about</div>
+      <h2 class="title">A fresher with a builder's habit.</h2>
+      <div class="about-grid">
+        <div class="about-text">
+          <p>I graduated in 2026 with a B.E. in Computer Engineering from Marathwada Mitra Mandal's Institute of Technology, Pune (SPPU), through the lateral entry route — and used that time to build <strong>three full backend projects</strong> instead of just studying for exams.</p>
+          <p>My focus is <strong>Java and Spring Boot</strong> for enterprise-style backend systems, with hands-on experience in <strong>NestJS and TypeScript</strong> for fast, type-safe REST APIs. I care about clean data models, proper API design, and code that another engineer can actually read.</p>
+          <p>Right now I'm applying broadly — from large MNCs to early-stage startups — and I'm open to relocating anywhere in India for the right opportunity.</p>
+        </div>
+        <div class="stat-list">
+          <div class="stat-row"><span class="k">DEGREE</span><span class="v">B.E. Computer Engg.</span></div>
+          <div class="stat-row"><span class="k">CGPA</span><span class="v">7.87 / 10</span></div>
+          <div class="stat-row"><span class="k">GRAD YEAR</span><span class="v">2026</span></div>
+          <div class="stat-row"><span class="k">BASE</span><span class="v">Pune, India</span></div>
+          <div class="stat-row"><span class="k">STACK</span><span class="v">Java / Spring Boot</span></div>
+          <div class="stat-row"><span class="k">SHIPPED</span><span class="v">3 deployed projects</span></div>
+          <div class="stat-row"><span class="k">STATUS</span><span class="v">open_to_work</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="section-inner reveal">
+      <div class="eyebrow">GET /skills</div>
+      <h2 class="title">Tech stack</h2>
+      <p class="lede">The languages, frameworks, and tools I actually build with — grouped by how I use them, not padded for length.</p>
+      <div class="skill-groups">
+        <div class="skill-card">
+          <div class="label">Languages & Frameworks</div>
+          <div class="chips">
+            <span class="chip">Java</span><span class="chip">Spring Boot</span>
+            <span class="chip">NestJS</span><span class="chip">TypeScript</span>
+            <span class="chip">REST APIs</span>
+          </div>
+        </div>
+        <div class="skill-card">
+          <div class="label">Data & Persistence</div>
+          <div class="chips">
+            <span class="chip">MySQL</span><span class="chip">PostgreSQL</span>
+            <span class="chip">Hibernate</span><span class="chip">JPA</span>
+          </div>
+        </div>
+        <div class="skill-card">
+          <div class="label">Tooling & Practices</div>
+          <div class="chips">
+            <span class="chip">Maven</span><span class="chip">Git</span>
+            <span class="chip">Postman</span><span class="chip">Swagger</span>
+            <span class="chip">OOP Design</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <div class="section-inner reveal">
+      <div class="eyebrow">GET /projects</div>
+      <h2 class="title">Things I've shipped</h2>
+      <p class="lede">Three projects, three different problems — each one deployed and reachable, not just sitting in a repo.</p>
+
+      <div class="project">
+        <div class="project-head">
+          <span class="method-badge m-post">POST</span>
+          <span class="path">/projects/booking-platform</span>
+          <span class="status-chip">201 Deployed</span>
+        </div>
+        <div class="project-body">
+          <h3>Booking Platform REST API</h3>
+          <p>A full booking/reservation backend built with NestJS and TypeScript, backed by PostgreSQL, with interactive Swagger documentation. Built as a live technical assessment and deployed end-to-end on Render.</p>
+          <div class="project-tags">
+            <span class="tag">NestJS</span><span class="tag">TypeScript</span><span class="tag">PostgreSQL</span><span class="tag">Swagger</span>
+          </div>
+          <div class="project-links">
+            <a href="https://booking-platform-fs2r.onrender.com" target="_blank" rel="noopener">Live API →</a>
+            <a href="https://github.com/sujal178" target="_blank" rel="noopener">Source →</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="project">
+        <div class="project-head">
+          <span class="method-badge m-get">GET</span>
+          <span class="path">/projects/expense-tracker</span>
+          <span class="status-chip">200 OK</span>
+        </div>
+        <div class="project-body">
+          <h3>Expense Tracker API</h3>
+          <p>A backend service for logging and categorizing personal expenses, built with Java and Spring Boot, using Hibernate/JPA over a MySQL database with clean layered architecture.</p>
+          <div class="project-tags">
+            <span class="tag">Java</span><span class="tag">Spring Boot</span><span class="tag">Hibernate</span><span class="tag">MySQL</span>
+          </div>
+          <div class="project-links">
+            <a href="https://github.com/sujal178" target="_blank" rel="noopener">Source →</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="project">
+        <div class="project-head">
+          <span class="method-badge m-post">POST</span>
+          <span class="path">/projects/decentralized-drive</span>
+          <span class="status-chip">200 OK</span>
+        </div>
+        <div class="project-body">
+          <h3>Decentralized Google Drive</h3>
+          <p>A blockchain-based file storage concept built on Ethereum using Solidity smart contracts, Hardhat for development/testing, and Web3.js for the client-side integration layer.</p>
+          <div class="project-tags">
+            <span class="tag">Solidity</span><span class="tag">Hardhat</span><span class="tag">Web3.js</span><span class="tag">Ethereum</span>
+          </div>
+          <div class="project-links">
+            <a href="https://github.com/sujal178" target="_blank" rel="noopener">Source →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CERTS -->
+  <section id="certs">
+    <div class="section-inner reveal">
+      <div class="eyebrow">GET /certifications</div>
+      <h2 class="title">Verified credentials</h2>
+      <div class="cert-grid">
+        <div class="cert-card">
+          <div class="cert-check">✓</div>
+          <div>
+            <h4>Python Programming Internship</h4>
+            <div class="issuer">YBI Foundation</div>
+            <div class="meta">DEC 2024 · ID: UABTM2HMKND6W</div>
+          </div>
+        </div>
+        <div class="cert-card">
+          <div class="cert-check">✓</div>
+          <div>
+            <h4>Java (Basic) Certificate</h4>
+            <div class="issuer">HackerRank</div>
+            <div class="meta">ID: 396C70C4073E</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GITHUB -->
+  <section id="github">
+    <div class="section-inner reveal">
+      <div class="eyebrow">GET /github/sujal178</div>
+      <h2 class="title">Live from GitHub</h2>
+      <div class="gh-card">
+        <div class="gh-head">
+          <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+          <span class="name">github.com/sujal178</span>
+        </div>
+        <div class="gh-imgs">
+          <img src="https://github-readme-stats.vercel.app/api?username=sujal178&show_icons=true&theme=dark&hide_border=true&bg_color=171C25&title_color=5EEAD4&text_color=8B95A3&icon_color=F5A623" alt="GitHub stats for sujal178">
+          <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=sujal178&layout=compact&theme=dark&hide_border=true&bg_color=171C25&title_color=5EEAD4&text_color=8B95A3" alt="Top languages for sujal178">
+        </div>
+        <div class="gh-note">// live stats render once this page is hosted on your own domain (GitHub Pages / Vercel / Netlify)</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="section-inner reveal" style="border-bottom:none;">
+      <div class="eyebrow">POST /contact</div>
+      <h2 class="title">Let's talk</h2>
+      <p class="lede">Hiring for a backend or Java role? Send a message directly, or reach me through any of the channels alongside.</p>
+      <div class="contact-grid">
+        <form id="contactForm">
+          <div class="field">
+            <label>Name</label>
+            <input type="text" id="cName" required placeholder="Your name">
+          </div>
+          <div class="field">
+            <label>Email</label>
+            <input type="email" id="cEmail" required placeholder="you@company.com">
+          </div>
+          <div class="field">
+            <label>Message</label>
+            <textarea id="cMsg" required placeholder="Tell me about the role..."></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary" style="border:none;cursor:pointer;">Send Message →</button>
+        </form>
+        <div class="contact-links">
+          <a class="contact-link-row" href="mailto:sujalbagwade17@gmail.com">
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z"/><path d="m22 6-10 7L2 6"/></svg>
+            <div class="txt"><div class="k">EMAIL</div><div class="v">sujalbagwade17@gmail.com</div></div>
+          </a>
+          <a class="contact-link-row" href="https://linkedin.com/in/sujalbagawade" target="_blank" rel="noopener">
+            <svg class="ic" viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 2h-17A1.5 1.5 0 0 0 2 3.5v17A1.5 1.5 0 0 0 3.5 22h17a1.5 1.5 0 0 0 1.5-1.5v-17A1.5 1.5 0 0 0 20.5 2ZM8 19H5v-9h3ZM6.5 8.25A1.75 1.75 0 1 1 8.3 6.5a1.78 1.78 0 0 1-1.8 1.75ZM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0 0 13 14.19a.66.66 0 0 0 0 .14V19h-3v-9h2.9v1.3a3.11 3.11 0 0 1 2.7-1.4c1.55 0 3.36.86 3.36 3.66Z"/></svg>
+            <div class="txt"><div class="k">LINKEDIN</div><div class="v">/in/sujalbagawade</div></div>
+          </a>
+          <a class="contact-link-row" href="https://github.com/sujal178" target="_blank" rel="noopener">
+            <svg class="ic" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+            <div class="txt"><div class="k">GITHUB</div><div class="v">/sujal178</div></div>
+          </a>
+          <a class="contact-link-row" href="#" onclick="return false;">
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-8-6.5-8-12a8 8 0 0 1 16 0c0 5.5-8 12-8 12Z"/><circle cx="12" cy="9" r="3"/></svg>
+            <div class="txt"><div class="k">LOCATION</div><div class="v">Pune, India</div></div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>// built by Sujal Bagawade — © 2026 — status: 200 OK</p>
+  </footer>
+
+</div>
+
+<script>
+  // Typewriter hero JSON
+  const jsonLines = [
+    {t:'req', text:'GET /profile HTTP/1.1'},
+    {t:'status', text:'Status: 200 OK'},
+    {t:'blank'},
+    {t:'raw', text:'{'},
+    {t:'kv', k:'name', v:'"Sujal Bagawade"'},
+    {t:'kv', k:'role', v:'"Backend Developer"'},
+    {t:'arr', k:'stack', v:['Java','Spring Boot','NestJS','PostgreSQL']},
+    {t:'kv', k:'grad_year', v:'2026'},
+    {t:'kv', k:'status', v:'"open_to_work"'},
+    {t:'kv', k:'location', v:'"Pune, India"', last:true},
+    {t:'raw', text:'}'}
+  ];
+
+  function renderLine(line){
+    if(line.t==='req') return `<div class="req-line"><span class="method">GET</span> ${line.text.replace('GET ','')}</div>`;
+    if(line.t==='status') return `<div class="status-line">${line.text}</div>`;
+    if(line.t==='blank') return `<div>&nbsp;</div>`;
+    if(line.t==='raw') return `<div class="json-punc">${line.text}</div>`;
+    if(line.t==='kv') return `<div>&nbsp;&nbsp;<span class="json-key">"${line.k}"</span><span class="json-punc">: </span><span class="json-str">${line.v}</span><span class="json-punc">${line.last?'':','}</span></div>`;
+    if(line.t==='arr') return `<div>&nbsp;&nbsp;<span class="json-key">"${line.k}"</span><span class="json-punc">: [</span><span class="json-arr">${line.v.map(x=>'"'+x+'"').join(', ')}</span><span class="json-punc">],</span></div>`;
+  }
+
+  const jsonBody = document.getElementById('jsonBody');
+  let i = 0;
+  function typeNext(){
+    if(i >= jsonLines.length){
+      jsonBody.insertAdjacentHTML('beforeend', '<span class="cursor"></span>');
+      return;
+    }
+    jsonBody.insertAdjacentHTML('beforeend', renderLine(jsonLines[i]));
+    i++;
+    setTimeout(typeNext, 130);
+  }
+  typeNext();
+
+  // Scroll reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, {threshold:0.12});
+  revealEls.forEach(el=>io.observe(el));
+
+  // Contact form -> mailto
+  document.getElementById('contactForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    const name = document.getElementById('cName').value;
+    const email = document.getElementById('cEmail').value;
+    const msg = document.getElementById('cMsg').value;
+    const subject = encodeURIComponent(`Portfolio contact from ${name}`);
+    const body = encodeURIComponent(`${msg}\n\n— ${name} (${email})`);
+    window.location.href = `mailto:sujalbagwade17@gmail.com?subject=${subject}&body=${body}`;
+  });
+</script>
+
+</body>
+</html>
