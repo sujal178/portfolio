@@ -579,23 +579,22 @@ document.getElementById("contactForm").addEventListener("submit", function (e) {
 
     e.preventDefault();
 
-    emailjs.send(
-        "service_f3ry8uc",
-        "template_yxndtqm",
-        {
-            from_name: document.getElementById("cName").value,
-            from_email: document.getElementById("cEmail").value,
-            message: document.getElementById("cMsg").value
-        }
-    )
-    .then(function () {
-        alert("✅ Message sent successfully!");
-        document.getElementById("contactForm").reset();
-    })
-    .catch(function (error) {
-        console.error(error);
-        alert("❌ Failed to send message.");
-    });
+  emailjs.send(
+    "service_f3ry8uc",
+    "template_yxndtqm",
+    {
+        from_name: document.getElementById("cName").value,
+        from_email: document.getElementById("cEmail").value,
+        message: document.getElementById("cMsg").value
+    }
+)
+.then(() => {
+    alert("Message sent successfully!");
+})
+.catch((error) => {
+    console.error("EmailJS:", error);
+    alert(`Status: ${error.status}\nMessage: ${error.text}`);
+});
 
 });
 </script>
